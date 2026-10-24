@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline';">
+  <!-- connect-src must list the API origin, or the browser blocks live scans. No inline scripts are needed. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://depvault-backend.onrender.com; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <meta name="referrer" content="no-referrer">
+  <!-- Base URL of the scan API (no trailing slash). Change it if your Render service has a different name. -->
+  <meta name="depvault-api" content="https://depvault-backend.onrender.com">
   <title>DepVault — Pre-install supply-chain scanner for npm and PyPI</title>
   <meta name="description" content="Check npm and PyPI packages before they run on your machine. Heuristic rules + privacy-first local AI. Free & open source (GPL-3.0).">
   <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="alternate icon" href="logo.png">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="live-scan.css">
 </head>
 <body>
   <!-- Parallax Background Layer -->
@@ -169,7 +174,30 @@
                 <span class="verdict-dot dot-block" aria-hidden="true"></span>
                 <span>Prompt Injection</span>
               </button>
+              <button class="scenario-tab" role="tab" aria-selected="false" id="tab-live" data-preset="live">
+                <span class="verdict-dot dot-live" aria-hidden="true"></span>
+                <span>Live scan</span>
+              </button>
             </div>
+
+            <!-- Live scan form: shown only on the "Live scan" tab (live-scan.js) -->
+            <form class="live-scan-form" id="live-scan-form" hidden autocomplete="off">
+              <label class="sr-only" for="live-scan-eco">Ecosystem</label>
+              <select id="live-scan-eco">
+                <option value="npm">npm</option>
+                <option value="pypi">pypi</option>
+              </select>
+              <label class="sr-only" for="live-scan-input">Package name and optional version</label>
+              <input id="live-scan-input" type="text" inputmode="text" spellcheck="false" maxlength="240" placeholder="express@4.21.2 or requests==2.31.0">
+              <button type="submit" class="live-scan-submit" id="live-scan-submit">Scan</button>
+              <div class="live-examples">
+                <span>Try:</span>
+                <button type="button" data-eco="npm" data-example="express@4.21.2">express</button>
+                <button type="button" data-eco="npm" data-example="esbuild@0.24.0">esbuild</button>
+                <button type="button" data-eco="npm" data-example="lodahs">lodahs</button>
+                <button type="button" data-eco="pypi" data-example="requests==2.31.0">requests</button>
+              </div>
+            </form>
 
             <!-- Terminal Output Screen -->
             <div class="terminal-screen" id="terminal-screen" tabindex="0" role="log" aria-live="polite">
@@ -185,7 +213,7 @@
 
             <div class="terminal-footer">
               <span class="term-status-badge">
-                <span class="status-indicator live"></span> Local AI via Ollama (localhost)
+                <span class="status-indicator live"></span> <span id="term-status-text">Local AI via Ollama (localhost)</span>
               </span>
               <span class="term-note">Ephemeral sandbox &bull; Zero telemetry</span>
             </div>
@@ -363,5 +391,6 @@
   </div>
 
   <script src="app.js"></script>
+  <script src="live-scan.js"></script>
 </body>
 </html>

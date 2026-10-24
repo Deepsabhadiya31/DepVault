@@ -1,0 +1,14 @@
+# Netlify configuration for DepVault frontend (static site).
+# The backend runs on Render; only the frontend folder is deployed here.
+
+[build]
+  publish = "frontend"
+  # No build command needed — the frontend is plain HTML/CSS/JS.
+  command = "echo 'No build step required'"
+
+# SPA-style fallback: serve index.html for all routes so client-side
+# navigation (if added later) works without 404s.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

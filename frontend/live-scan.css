@@ -1,0 +1,133 @@
+/* DepVault Website — Live Scan form inside the hero terminal. Uses existing terminal tokens. */
+
+.live-scan-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--term-surface);
+  border-bottom: 1px solid var(--term-border);
+}
+
+.live-scan-form[hidden] {
+  display: none;
+}
+
+.live-scan-form select,
+.live-scan-form input {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--term-text);
+  background: var(--term-bg);
+  border: 1px solid var(--term-border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.55rem;
+}
+
+.live-scan-form input {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.live-scan-form select:focus-visible,
+.live-scan-form input:focus-visible {
+  outline: none;
+  border-color: var(--term-prompt);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.25);
+}
+
+.live-scan-submit {
+  font-family: var(--font-system);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #030d14;
+  background: var(--term-prompt);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+}
+
+.live-scan-submit:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.live-examples {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.74rem;
+  color: var(--term-muted);
+}
+
+.live-examples button {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--term-muted);
+  background: transparent;
+  border: 1px solid var(--term-border);
+  border-radius: 9999px;
+  padding: 0.12rem 0.55rem;
+  cursor: pointer;
+}
+
+.live-examples button:hover {
+  color: var(--term-text);
+  border-color: var(--term-prompt);
+}
+
+.live-summary {
+  color: var(--term-text);
+  margin-bottom: 0.6rem;
+}
+
+.live-finding {
+  margin-bottom: 0.45rem;
+}
+
+.live-meta {
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+}
+
+.live-warn-line {
+  margin-top: 0.6rem;
+  color: var(--term-warn);
+  font-weight: 650;
+}
+
+.live-allow-line {
+  margin-top: 0.6rem;
+  color: var(--term-allow);
+  font-weight: 650;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.dot-live {
+  background-color: var(--term-prompt);
+  box-shadow: 0 0 6px var(--term-prompt);
+}
+
+/* Layout fix: grid children default to min-width:auto, so the non-wrapping tab row
+   forced the terminal wider than a phone screen (it was clipped by overflow-x:hidden).
+   min-width:0 lets the tab row scroll horizontally as intended. */
+.hero-section > *,
+.hero-terminal,
+.terminal-container {
+  min-width: 0;
+}
