@@ -341,22 +341,30 @@ code, kbd, samp, pre {
 }
 
 .brand-badge {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-sm);
-  background: var(--peacock-pill-bg);
-  border: 1px solid var(--peacock-pill-border);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: #051d40;
+  border: 1px solid rgba(8, 145, 178, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--peacock-vibrant);
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-smooth), border-color var(--transition-smooth);
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(5, 29, 64, 0.25);
+  transition: transform var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
 }
 
 .brand:hover .brand-badge {
   transform: scale(1.05);
   border-color: var(--peacock-vibrant);
+  box-shadow: 0 4px 16px rgba(8, 145, 178, 0.35);
+}
+
+.brand-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  flex-shrink: 0;
 }
 
 .brand-name {
