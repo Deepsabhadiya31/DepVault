@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline';">
+  <title>DepVault — Pre-install supply-chain scanner for npm and PyPI</title>
+  <meta name="description" content="Check npm and PyPI packages before they run on your machine. Heuristic rules + privacy-first local AI. Free & open source (GPL-3.0).">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Parallax Background Layer -->
+  <div class="parallax-bg" aria-hidden="true">
+    <div class="parallax-img" id="parallax-img"></div>
+    <div class="parallax-overlay"></div>
+  </div>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Ambient Peacock Glow Accent Background -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <div class="site-wrapper">
+    <!-- 1. Header: wordmark, GitHub link, Docs link, and Segmented Theme Switch -->
+    <header class="site-header" role="banner">
+      <div class="header-inner">
+        <a href="/" class="brand" aria-label="DepVault Home">
+          <div class="brand-badge">
+            <svg class="brand-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          </div>
+          <span class="brand-name">DepVault</span>
+          <span class="badge badge-version">v0.1.0</span>
+        </a>
+
+        <div class="header-actions">
+          <!-- Crystal Clear Segmented Theme Switcher -->
+          <div class="theme-segmented-switch" role="radiogroup" aria-label="Color theme switcher">
+            <button type="button" class="theme-seg-btn active" id="btn-theme-light" role="radio" aria-checked="true" title="Switch to White + Peacock Blue Light Mode">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+              <span>Light</span>
+            </button>
+            <button type="button" class="theme-seg-btn" id="btn-theme-dark" role="radio" aria-checked="false" title="Switch to Midnight Peacock Dark Mode">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+              <span>Dark</span>
+            </button>
+          </div>
+
+          <a href="#docs" class="nav-link" id="docs-btn">Docs</a>
+          <a href="https://github.com/VaikunthAnkola/DepVault.git" class="nav-link github-link" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            <span>GitHub</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <!-- 2. Hero Section: Full Landscape 2-Column Desktop Grid -->
+      <section class="hero-section" aria-labelledby="hero-heading">
+        <div class="hero-content">
+          <div class="hero-pill-badge">
+            <span class="pill-dot"></span>
+            <span>Zero-Execution Sandbox &bull; 100% Local AI</span>
+          </div>
+
+          <h1 id="hero-heading" class="hero-title">
+            Check npm and PyPI packages before they run on your machine
+          </h1>
+          <p class="hero-lead">
+            Inspects tarballs in an isolated pre-install sandbox. Delivers deterministic heuristic rules plus local, privacy-first AI explanation. Nothing ever executes.
+          </p>
+
+          <!-- Premium White + Peacock Blue Install Card -->
+          <div class="install-card" role="region" aria-label="Quick Install">
+            <div class="install-bar">
+              <span class="install-label">Quick Install:</span>
+              <div class="code-box">
+                <span class="prompt-symbol">$</span>
+                <code id="install-cmd">pipx install depvault</code>
+                <button class="copy-btn" id="copy-install-btn" aria-label="Copy install command to clipboard" title="Copy to clipboard">
+                  <svg class="copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span class="copy-text">Copy</span>
+                </button>
+              </div>
+            </div>
+            <div class="install-alt">
+              <span>Also works via <code>uvx depvault scan npm:&lt;pkg&gt;</code></span>
+              <span class="bullet-sep">&bull;</span>
+              <span>Zero background daemons</span>
+            </div>
+          </div>
+
+          <div class="hero-highlights">
+            <div class="highlight-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Blocks malicious <code>postinstall</code> hooks</span>
+            </div>
+            <div class="highlight-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>100% Offline AI via Ollama</span>
+            </div>
+            <div class="highlight-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Exit code 2 abort protects CI &amp; CLI</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Terminal Simulator Cockpit -->
+        <div class="hero-terminal">
+          <div class="terminal-container" role="region" aria-label="DepVault CLI Interactive Demo">
+            <div class="terminal-header">
+              <div class="terminal-dots" aria-hidden="true">
+                <span class="dot dot-close"></span>
+                <span class="dot dot-minimize"></span>
+                <span class="dot dot-maximize"></span>
+              </div>
+              <div class="terminal-title">
+                <span class="term-title-shield">&#x25C6;</span> guard scan &mdash; DepVault v0.1.0
+              </div>
+              <div class="terminal-controls">
+                <button id="term-replay" class="term-btn" title="Replay scan demonstration" aria-label="Replay scan">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                  <span>Replay</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Scenario tabs -->
+            <div class="terminal-scenarios" role="tablist" aria-label="CLI Demonstration Presets">
+              <button class="scenario-tab active" role="tab" aria-selected="true" id="tab-malicious" data-preset="malicious">
+                <span class="verdict-dot dot-block" aria-hidden="true"></span>
+                <span>Malicious (postinstall)</span>
+              </button>
+              <button class="scenario-tab" role="tab" aria-selected="false" id="tab-typosquat" data-preset="typosquat">
+                <span class="verdict-dot dot-warn" aria-hidden="true"></span>
+                <span>Typosquat (PyPI)</span>
+              </button>
+              <button class="scenario-tab" role="tab" aria-selected="false" id="tab-clean" data-preset="clean">
+                <span class="verdict-dot dot-allow" aria-hidden="true"></span>
+                <span>Safe Package</span>
+              </button>
+              <button class="scenario-tab" role="tab" aria-selected="false" id="tab-injection" data-preset="injection">
+                <span class="verdict-dot dot-block" aria-hidden="true"></span>
+                <span>Prompt Injection</span>
+              </button>
+            </div>
+
+            <!-- Terminal Output Screen -->
+            <div class="terminal-screen" id="terminal-screen" tabindex="0" role="log" aria-live="polite">
+              <div class="terminal-content" id="terminal-content">
+                <div class="term-line prompt-line">
+                  <span class="term-prompt">guard &gt;</span> <span class="term-cmd">npm install expresss@1.0.0</span>
+                </div>
+                <div class="term-body" id="term-output">
+                  <!-- Dynamically populated by app.js -->
+                </div>
+              </div>
+            </div>
+
+            <div class="terminal-footer">
+              <span class="term-status-badge">
+                <span class="status-indicator live"></span> Local AI via Ollama (localhost)
+              </span>
+              <span class="term-note">Ephemeral sandbox &bull; Zero telemetry</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. How it works: three steps in one row -->
+      <section class="section" id="how-it-works" aria-labelledby="how-it-works-heading">
+        <div class="section-header">
+          <div class="section-badge">Architecture</div>
+          <h2 id="how-it-works-heading" class="section-title">How it works</h2>
+          <p class="section-sub">Three isolated stages. Nothing executes. Everything runs locally on your machine.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-header">
+              <div class="step-number" aria-hidden="true">01</div>
+              <span class="step-pill">Stage 1</span>
+            </div>
+            <h3 class="step-title">Download safely</h3>
+            <p class="step-desc">
+              Fetches tarballs over HTTPS directly from <code>registry.npmjs.org</code> or <code>pypi.org</code>. Verifies official published checksums (sha256/integrity) and unpacks into an ephemeral sandbox with strict zip-slip and bomb defenses (SEC-1 to SEC-3).
+            </p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-header">
+              <div class="step-number" aria-hidden="true">02</div>
+              <span class="step-pill">Stage 2</span>
+            </div>
+            <h3 class="step-title">Check with rules + local AI</h3>
+            <p class="step-desc">
+              Deterministic AST &amp; regex rules flag install hooks (<code>preinstall</code>, <code>setup.py</code>), credential paths, and network calls. Flagged snippets are passed to a local open-source LLM via Ollama for plain-English synthesis.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-header">
+              <div class="step-number" aria-hidden="true">03</div>
+              <span class="step-pill">Stage 3</span>
+            </div>
+            <h3 class="step-title">Allow / Warn / Block</h3>
+            <p class="step-desc">
+              Formula guarantees AI can raise risk but never lower it below rule findings. An <strong class="text-allow">ALLOW</strong> passes directly to your real package manager. <strong class="text-warn">WARN</strong> prompts for confirmation. <strong class="text-block">BLOCK</strong> aborts immediately before code ever touches disk.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Why trust it: 4 cards across landscape width -->
+      <section class="section" id="why-trust-it" aria-labelledby="why-trust-heading">
+        <div class="section-header">
+          <div class="section-badge">Security Principles</div>
+          <h2 id="why-trust-heading" class="section-title">Why trust it</h2>
+          <p class="section-sub">Designed defensively for hostile environments. DepVault treats every incoming package as adversarial.</p>
+        </div>
+
+        <div class="trust-grid">
+          <div class="trust-card">
+            <div class="trust-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10h-10V2z"/></svg>
+            </div>
+            <div class="trust-content">
+              <h3>100% Local AI</h3>
+              <p>Uses 100% local AI inference via Ollama. Only official package registries, OSV.dev, and <code>localhost</code> are ever contacted. Zero cloud APIs, zero telemetry, zero code leaves your machine.</p>
+            </div>
+          </div>
+
+          <div class="trust-card">
+            <div class="trust-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>
+            </div>
+            <div class="trust-content">
+              <h3>Never executes packages</h3>
+              <p>Safe AST and tar extraction in ephemeral memory. No <code>setup.py</code>, <code>npm install</code>, or build script code is ever run, imported, or compiled during analysis.</p>
+            </div>
+          </div>
+
+          <div class="trust-card">
+            <div class="trust-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </div>
+            <div class="trust-content">
+              <h3>Pure Open Source (GPL-3.0)</h3>
+              <p>Transparent rules, public scoring formulas, and verifiable reproducible builds. No paywalled enterprise gates or proprietary cloud dependencies.</p>
+            </div>
+          </div>
+
+          <div class="trust-card">
+            <div class="trust-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div class="trust-content">
+              <h3>Coordinated Disclosure</h3>
+              <p>Strict vulnerability handling with 72-hour acknowledgement and private reporting channels. Read our full policy in <a href="#security-modal" id="open-security-link" class="inline-link">SECURITY.md</a>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Contribute: links to good-first-issues and CONTRIBUTING.md -->
+      <section class="section" id="contribute" aria-labelledby="contribute-heading">
+        <div class="section-header">
+          <div class="section-badge">Open Source Community</div>
+          <h2 id="contribute-heading" class="section-title">Contribute</h2>
+          <p class="section-sub">Built for the community. Add new heuristic rules without touching core pipeline logic.</p>
+        </div>
+
+        <div class="contribute-card">
+          <div class="contribute-info">
+            <h3>Hacktoberfest &amp; First-Timers Welcome</h3>
+            <p>
+              Rules are standalone declarative files in <code>rules/</code> accompanied by straightforward test fixtures. You can add a new supply-chain detection pattern in under 30 minutes with no deep Python internals required.
+            </p>
+            <div class="contribute-badges">
+              <span class="badge badge-outline">DCO Sign-Off</span>
+              <span class="badge badge-outline">Ruff + mypy verified</span>
+              <span class="badge badge-outline">&ge; 80% check coverage</span>
+            </div>
+          </div>
+          <div class="contribute-actions">
+            <a href="https://github.com/VaikunthAnkola/DepVault/issues" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+              Browse Good First Issues &rarr;
+            </a>
+            <a href="#contributing-modal" id="open-contributing-link" class="btn btn-secondary">
+              Read CONTRIBUTING.md
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 6. Footer: license, version, "one layer of defence, not a guarantee". -->
+    <footer class="site-footer" role="contentinfo">
+      <div class="footer-inner">
+        <div class="footer-meta">
+          <div class="footer-brand-lockup">
+            <span class="footer-brand">DepVault</span>
+            <span class="badge badge-version">v0.1.0</span>
+          </div>
+          <div class="footer-license">
+            Licensed under <strong>GPL-3.0-or-later</strong> &bull; Open-source supply-chain defense
+          </div>
+          <div class="footer-disclaimer" role="note">
+            &ldquo;One layer of defence, not a guarantee.&rdquo;
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/VaikunthAnkola/DepVault.git" target="_blank" rel="noopener noreferrer">Source Code</a>
+          <span class="sep" aria-hidden="true">&bull;</span>
+          <a href="#docs" class="footer-docs-link">Documentation</a>
+          <span class="sep" aria-hidden="true">&bull;</span>
+          <a href="#security-modal" class="footer-sec-link">Security Policy</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- In-page Documentation / Policy Modal -->
+  <div id="info-modal" class="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-title" class="modal-heading">Document Viewer</h3>
+        <button id="modal-close-btn" class="modal-close" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        <!-- Injected dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button id="modal-dismiss-btn" class="btn btn-secondary btn-sm">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
